@@ -1,10 +1,13 @@
 
 \documentclass[portrait,a0paper,fontscale=0.25]{baposter}
+\usepackage{geometry} % Added package for margin control
+\geometry{top=1cm}    % Pushed content down by 2cm
 \usepackage{wrapfig}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[sfdefault]{Fira Sans}
+\usepackage[export]{adjustbox}
 
 \usepackage{color}
 \usepackage{graphicx}
@@ -32,12 +35,13 @@
 	boxColorOne=white,
 	headershade=plain,
 	headerColorOne=black!15, % box header background color
-	headerFontColor=black,
+	headerFontColor=black
 	}%
 	{\includegraphics[height=7em]{logos/mff-black.pdf}}
 	{Webová aplikace pro interaktivní
 hlasování}
-	{\vspace{1ex} Matěj Foukal}
+	{\vspace{1ex} Autor: Matěj Foukal | Vedoucí: Mgr. Petr Škoda, Ph.D.
+}
 	{\includegraphics[height=7em]{logos/uk-red.pdf}}
 
 
@@ -46,38 +50,34 @@ hlasování}
 % LEFT COLUMN (CORRECTED)
 %
 \begin{posterbox}[column=0, name=motivace]{Motivace}
-    Interaktivní hlasování je cestou, jak aktivizovat publikum a získat okamžitou zpětnou vazbu.
-    
-    \vspace{1ex}
-    Současná komerční řešení jsou však často:
-    \begin{itemize}
-        \item \textbf{Omezená} ve svých bezplatných verzích.
-        \item \textbf{Placená}, což brání širšímu využití ve výuce.
-        \item \textbf{Uzavřená} pro integraci s nástroji třetích stran.
-    \end{itemize}
-    \vspace{1ex}
-    
-    Cílem této práce je proto vytvoření \textbf{open-source alternativy}, která tato omezení překonává.
+    Interaktivní hlasování umožňuje aktivizovat publikum a získat okamžitou zpětnou vazbu. 
+    Současná komerční řešení jsou však často výrazně omezená ve svých bezplatných verzích. 
+    Navíc je jejich kód uzavřený, což znemožňuje vlastní integrace s nástroji třetích stran. 
+
+    Cílem této práce je vytvoření \textbf{open-source} webové aplikace určené pro hlasování, která vybraná omezení existujících řešení překonává.
 \end{posterbox}
 
 % Změna zde: Jednoduché umístění pod předchozí box
 \begin{posterbox}[column=0, name=goals, below=motivace, headerColorOne=cyan!60, boxColorOne=cyan!20]{Cíle práce}
-    \begin{itemize}
-        \item Navrhnout a implementovat otevřenou a flexibilní platformu.
-        \item Umožnit snadné nasazení a další rozšiřování systému.
-        \item Vytvořit přehledné UI pro učitele i studenty.
-        \item Ověřit použitelnost výsledného řešení pomocí uživatelského testování.
-    \end{itemize}
+V rámci práce jsme identifikovali hlavní uživatelské role (učitel, student, správce) a na základě dotazníkového šetření jsme stanovili jejich potřeby. Z nich uvádíme několik příkladů:
+\begin{itemize}
+  \item Učitel: možnost vytvářet různé typy aktivit.
+  \item Učitel: sdílet hlasování pomocí odkazu nebo QR kódu.
+  \item Student: připojení k aktivitě bez nutnosti registrace.
+  \item Správce: snadné nasazení systému.
+\end{itemize}
 \end{posterbox}
 
 % Změna zde: Jednoduché umístění a oprava 'span'
 % Parametr 'span' zde ani není nutný, box se natáhne sám.
 \begin{posterbox}[column=0, name=architektura, below=goals]{Architektura systému}
-    Systém je navržen jako monolitická serverová aplikace (\textbf{ASP.NET Core}) poskytující API pro dvě oddělené klientské aplikace (\textbf{SvelteKit}). Ukládání dat zajišťuje databáze \textbf{PostgreSQL} a celý systém je kontejnerizován pomocí \textbf{Dockeru}.
+    Při návrhu architektury jsme kladli důraz na oddělení webových aplikací pro studenty a učitele, 
+    abychom umožnili jejich budoucí vizuální odloučení. 
+    Server je realizován jako monolitická aplikace v~ASP.NET~a~C\#. 
+    Data jsou ukládána v databázi PostgreSQL. Pro snadnou správu databáze jsme zvolili nástroj Adminer. Pro jednoduché spuštění a nasazení je systém připraven v~Dockeru.
 
-    \vspace{2ex}
     \begin{center}
-        \includegraphics[width=0.7\textwidth]{img/structurizr_c4_l2 (1).png}
+        \includegraphics[width=0.64\textwidth]{img/structurizr_c4_l2 (1).png}
     \end{center}
 \end{posterbox}
 
@@ -86,20 +86,24 @@ hlasování}
 % RIGHT COLUMN
 %
 \begin{posterbox}[column=1, name=result1]{Ukázka uživatelského rozhraní}
-    % Zde doporučuji vložit 2-3 screenshoty vaší aplikace
+    Uživatelské rozhraní bylo inspirováno webovou aplikací Slido. 
+    Návrh probíhal ve více fázích, od prvotních návrhů rozhraní (wireframes) až po finální implementaci. 
+    Důraz byl kladen především na jednoduchost, intuitivnost a responzivitu pro podporu různých zařízení. 
     \begin{center}
         \includegraphics[width=1\textwidth, valign=T]{img/user_docs_img_8.png}
     \end{center}
 \end{posterbox}
 
 % VÁŠ BOX S TESTOVÁNÍM (ZŮSTÁVÁ STEJNÝ)
-\begin{posterbox}[column=1, name=sus_test, below=result1]{Ověření použitelnosti (Metoda \textit{SUS})}
-    Pro ověření použitelnosti systému byla zvolena standardizovaná metoda SUS. Testování se zúčastnilo 5 respondentů, kteří po splnění připravených úkolů ohodnotili 10 tvrzení na škále 1 až 5.
+\begin{posterbox}[column=1, name=sus_test, below=result1]{Ověření použitelnosti}
+      Pro ověření použitelnosti systému byla zvolena standardizovaná metoda \textit{SUS} (System Usability Scale). 
+    Testování se zúčastnilo 5 respondentů, kteří po splnění připravených úkolů ohodnotili 10 tvrzení o použitelnosti systému na škále 1 až 5.
 
-    Výsledné skóre bylo vypočteno podle následujícího vzorce:
+    Výsledné skóre je vypočteno podle následujícího vzorce:
     $$ SUS = 2.5 \cdot (20 + \sum(\text{T}_{\text{liché}}) - \sum(\text{T}_{\text{sudé}})) $$
 
-        Dosažený výsledek značí \textbf{nadprůměrnou úroveň použitelnosti} a splňuje tak stanovený cíl projektu.
+    Dosažený výsledek \textbf{81.5} bodů odpovídá \textbf{nadprůměrné použitelnosti}. Zároveň překračuje hranici 68 bodů, která značí průměrnou uživatelskou použitelnost.
+
 
 
     \large % Větší písmo pro výsledek
@@ -111,33 +115,23 @@ hlasování}
 \end{posterbox}
 
 % OPRAVENO ZDE: Přidán parametr 'below=sus_test'
-\begin{posterbox}[column=1, name=result3, below=sus_test, headerColorOne=green!60, boxColorOne=green!20]{Výsledek}
-    \large\bfseries
+\begin{posterbox}[column=1, name=result3, below=sus_test, headerColorOne=green!60, boxColorOne=green!20]{Výsledek práce}
     \vspace{1ex}
-    \begin{center}
-        Výsledkem práce je funkční open-source systém splňující identifikované a stanovené uživatelské požadavky a očekávání.
-    \end{center}
+Výsledkem této práce je funkční open-source systém, který splňuje klíčové stanovené uživatelské požadavky. 
+    Představuje tak rozumnou alternativu k zavedeným řešením interaktivního hlasování a překonává některá z jejich omezení.
     \vspace{.5ex}
 \end{posterbox}
 
-\begin{posterbox}[column=1, name=conclusion, below=result3]{Závěry a budoucí práce}
-    % --- Textová část nahoře ---
+\begin{posterbox}[column=1, name=conclusion, below=result3, 
+  headerColorOne=orange!70, boxColorOne=orange!20]{Závěr a budoucí rozšíření}
     \begin{wrapfigure}{R}{0.25\linewidth} % R = doprava, šířka = 25% šířky boxu
         \centering
         \includegraphics[width=\linewidth]{img/github_qr.png}
     \end{wrapfigure}
-    \textbf{Klíčové vlastnosti:}
-    \begin{itemize}
-        \item Plně funkční systém dostupný jako \textbf{open-source}.
-        \item Řešení postavené na moderních a rozšířených technologiích.
-        \item Flexibilní architektura umožňující snadné přidávání nových typů aktivit.
-    \end{itemize}
-    \textbf{Budoucí práce:}
-    \begin{itemize}
-        \item Přechod z \textit{polling} na \textit{WebSockets} pro real-time aktualizace.
-        \item Rozšíření o pokročilejší statistiky a generování reportů.
-        \item Vytvoření dedikovaného rozhraní pro administrátory.
-    \end{itemize}
+Systém zatím nebyl nasazen ani testován v reálné výuce. 
+V budoucnu proto plánujeme ověřit jeho výkonnost a nefunkční požadavky přímo mezi uživateli. 
+Dále zvažujeme technologické úpravy, zejména přechod z \textit{pollingu} na \textit{WebSockets} pro skutečné real-time zobrazení výsledků. 
+Za klíčové rozšíření považujeme také modul pro pokročilé generování statistik a reporting.
 
 \end{posterbox}
 
